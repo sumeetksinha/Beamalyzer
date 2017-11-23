@@ -558,15 +558,129 @@ if (isempty(filename))
   return;
 end
 
-rawdata=load(filename);
-if ( (size(rawdata,1) > size(node_main_var,1)) || (size(rawdata,2) ~= size(node_main_var,2)))
-    errordlg('Check the size of variable and your File content size whether it matches or not','Size MisMatch Error');
-else
-    Node_Data_Table = findobj('Tag','Node_Data_Table');
-    Node_Data_Table.Data(1:size(rawdata,1),:) = rawdata;
-    node_temp_var = Node_Data_Table.Data;
+% hObject    handle to Save (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    structure with handles and user data (see GUIDATA)
+global nnodes nele coord concen fixity ends A Izz Iyy J E v beta_ang w DEFL REACT ELE_FOR AFLAG;
+
+if (isempty(filename))
+  return;
 end
 
+fileID = fopen(filename,'r');
+tline = strtrim(fgetl(fileID)); %% get all the lines from matlab 
+while ~feof(fileID)
+    if (size(strfind(tline,'---')) == 0)
+      if(strcmp(tline,'nnodes'))
+        tline = strtrim(fgetl(fileID));
+        nnodes = str2num(tline);
+        coord  = zeros(nnodes,3);
+        concen  = zeros(nnodes,6);
+        fixity  = zeros(nnodes,6);
+      elseif (strcmp(tline,'coord'))
+        for i=1:nnodes
+          tline = strtrim(fgetl(fileID));
+          num = str2double(strsplit(tline));
+          coord(i,:) = num;
+        end
+      elseif (strcmp(tline,'concen'))
+        for i=1:nnodes
+          tline = strtrim(fgetl(fileID));
+          num = str2double(strsplit(tline));
+          concen(i,:) = num;
+        end
+      elseif (strcmp(tline,'fixity'))
+        for i=1:nnodes
+          tline = strtrim(fgetl(fileID));
+          num = str2double(strsplit(tline));
+          fixity(i,:) = num;
+        end
+      elseif (strcmp(tline,'nele'))
+        tline = strtrim(fgetl(fileID));
+        nele = str2num(tline);
+        ends  = zeros(nele,2);
+        A  = zeros(nele,1);
+        Izz  = zeros(nele,1);
+        Iyy  = zeros(nele,1);
+        Izz  = zeros(nele,1);  
+        J  = zeros(nele,1);
+        E  = zeros(nele,1);
+        A  = zeros(nele,1);
+        v  = zeros(nele,1); 
+        beta_ang  = zeros(nele,1);
+        w  = zeros(nele,3); 
+      elseif (strcmp(tline,'ends'))
+        for i=1:nele
+          tline = strtrim(fgetl(fileID));
+          num = str2double(strsplit(tline));
+          ends(i,:) = num;
+        end
+      elseif (strcmp(tline,'A'))
+        for i=1:nele
+          tline = strtrim(fgetl(fileID));
+          num = str2double(strsplit(tline));
+          A(i,:) = num;
+        end
+      elseif (strcmp(tline,'Izz'))
+        for i=1:nele
+          tline = strtrim(fgetl(fileID));
+          num = str2double(strsplit(tline));
+          Izz(i,:) = num;
+        end
+      elseif (strcmp(tline,'Iyy'))
+        for i=1:nele
+          tline = strtrim(fgetl(fileID));
+          num = str2double(strsplit(tline));
+          Iyy(i,:) = num;
+        end 
+      elseif (strcmp(tline,'Izz'))
+        for i=1:nele
+          tline = strtrim(fgetl(fileID));
+          num = str2double(strsplit(tline));
+          Izz(i,:) = num;
+        end
+      elseif (strcmp(tline,'J'))
+        for i=1:nele
+          tline = strtrim(fgetl(fileID));
+          num = str2double(strsplit(tline));
+          J(i,:) = num;
+        end 
+      elseif (strcmp(tline,'E'))
+        for i=1:nele
+          tline = strtrim(fgetl(fileID));
+          num = str2double(strsplit(tline));
+          E(i,:) = num;
+        end 
+      elseif (strcmp(tline,'A'))
+        for i=1:nele
+          tline = strtrim(fgetl(fileID));
+          num = str2double(strsplit(tline));
+          A(i,:) = num;
+        end
+      elseif (strcmp(tline,'v'))
+        for i=1:nele
+          tline = strtrim(fgetl(fileID));
+          num = str2double(strsplit(tline));
+          v(i,:) = num;
+        end
+      elseif (strcmp(tline,'beta_ang'))
+        for i=1:nele
+          tline = strtrim(fgetl(fileID));
+          num = str2double(strsplit(tline));
+          beta_ang(i,:) = num;
+        end 
+      elseif (strcmp(tline,'w'))
+        for i=1:nele
+          tline = strtrim(fgetl(fileID));
+          num = str2double(strsplit(tline));
+          w(i,:) = num;
+        end           
+      end
+    end
+    tline = strtrim(fgetl(fileID));
+end
+
+fclose(fileID);
 
 % --- Executes when entered data in editable cell(s) in Node_Data_Table.
 function Node_Data_Table_CellEditCallback(hObject, eventdata, handles)

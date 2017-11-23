@@ -8,7 +8,7 @@ Some of the cool features of the program are :-
 	* Entering input variables is quite simple and is self-guidable once you start Bemalyzer program.
 	* One can also directly load a input file and analyz the results visualially in the same program
 	* It has both visual preprocessing and post processing capabilities. You can visualize the mesh as well as the analysis results.
-	* It can also draw Bending Moments, Shear Force and Deflection f=diagrams of selected beams. 
+	* It can also draw Bending Moments, Shear Force and Deflection diagrams of selected beams. 
 
 For any of issues or queries, please contact by Sumeet Kumar Sinha at sumeet.kumar507@gmail.com (www.sumeetksinha.com).
 

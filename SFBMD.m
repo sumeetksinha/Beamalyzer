@@ -40,10 +40,10 @@ function SFBMD(option,forces,distloads,len)
 		% sf(x)=dsolve(diff(sf_,1)==w,sf_(0)==sf1,sf_(len)==-sf2);
 		%bm(x)=dsolve(diff(bm_,1)==1*m*sf(x),bm_(0)==-bm1,bm_(len)==bm2);
 		sf(x)=dsolve(diff(sf_,1)==w,sf_(0)==sf1); waitbar(0.5);
-		bm(x)=dsolve(diff(bm_,1)==1*m*sf(x),bm_(0)==-bm1);waitbar(0.7);
+		bm(x)=dsolve(diff(bm_,1)==1*m*sf(x),bm_(0)==bm1);waitbar(0.7);
 		diff(bm_,1)==1*m*sf(x);
-		bm_(0)==-bm1;
-		bm_(len)==bm2;
+		bm_(0)==bm1;
+		bm_(len)==-bm2;
 
 		x = linspace(0,len);
 
